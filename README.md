@@ -13,3 +13,9 @@ nvidia-docker run -it -p 8888:8888 -p 6006:6006 -v /mnt:/mnt kampta/dl-docker ba
 
 #### For Azure
 Follow instructions [here](https://github.com/NVIDIA/nvidia-docker/wiki/Deploy-on-Azure) to run cuda images on azure VM.
+
+-----------------------------------
+
+
+## Troubleshooting
+Above image throws some errors while working on caffe2. 

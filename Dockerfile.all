@@ -188,8 +188,11 @@ RUN echo "$CAFFE_ROOT/build/lib" >> /etc/ld.so.conf.d/caffe.conf && ldconfig
 RUN pip --no-cache-dir install git+git://github.com/fchollet/keras.git@${KERAS_VERSION}
 
 # Install caffe2
-RUN git clone --branch master --recursive https://github.com/pytorch/pytorch.git
-RUN cd pytorch && mkdir build && cd build \
+pip install --user \
+      hypothesis \
+      pydot
+RUN git clone --branch master - -recursive https://github.com/pytorch/pytorch.git /root/pytorch
+RUN cd /root/pytorch && mkdir build && cd build \
     && cmake .. \
     -DCUDA_ARCH_NAME=Manual \
     -DCUDA_ARCH_BIN="35 52 60 61" \
