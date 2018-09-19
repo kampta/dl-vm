@@ -7,32 +7,36 @@ ENV Caffe2_DIR /usr/local/caffe2_build
 ENV PYTHONPATH /usr/local/caffe2_build:${PYTHONPATH}
 ENV LD_LIBRARY_PATH /usr/local/caffe2_build/lib:${LD_LIBRARY_PATH}
 
-# Clone the Detectron repository
-RUN git clone https://github.com/facebookresearch/detectron /detectron
+# Clone the Densepose repository
+RUN git clone https://github.com/facebookresearch/densepose /densepose
 
 # Install Python dependencies
-RUN pip install -r /detectron/requirements.txt
+RUN pip install -r /densepose/requirements.txt
 
 # Install the COCO API
 RUN git clone https://github.com/cocodataset/cocoapi.git /cocoapi
 WORKDIR /cocoapi/PythonAPI
 RUN make install
 
-# Go to Detectron root
-WORKDIR /detectron
+# Go to Densepose root
+WORKDIR /densepose
 
 # Set up Python modules
 RUN make
-
-# [Optional] Build custom ops
 RUN make ops
 
-# Clone the Densepose repository
-RUN git clone https://github.com/facebookresearch/densepose /densepose
+# Get Densepose models
+RUN apt-get update && apt-get install -y \
+    wget
+RUN cd /densepose/DensePoseData && bash get_densepose_uv.sh
 
-# Go to Densepose root
-WORKDIR /detectron
+# Setup jupyter notebook
+COPY jupyter_notebook_config.py /root/.jupyter/
 
-# Build custom ops
-RUN make
-RUN make ops
+# Jupyter has issues with being run directly: https://github.com/ipython/ipython/issues/7062
+COPY run_jupyter.sh /
+
+# Expose Ports for TensorBoard (6006), Ipython (8888)
+EXPOSE 6006 8888
+
+CMD ["jupyter", "notebook", "--allow-root", "--no-browser", "--ip=0.0.0.0"]

@@ -6,9 +6,8 @@ This is a boilerplate docker image for doing most kind of deep learning stuff. I
 ## Installation
 
 ```
-nvidia-docker build -t kampta/dl-docker -f Dockerfile .
-nvidia-docker run -it -p 8888:8888 -p 6006:6006 -v /mnt:/mnt kampta/dl-docker bash
-
+sudo docker build -t kampta/caffe2-vm:latest -f Dockerfile.caffe2 .
+sudo docker run --runtime=nvidia -v /home/kampta/dev:/home/kampta/dev -p 8888:8888 --rm -it kampta/caffe2-vm:latest
 ```
 
 #### For Azure
@@ -18,4 +17,4 @@ Follow instructions [here](https://github.com/NVIDIA/nvidia-docker/wiki/Deploy-o
 
 
 ## Troubleshooting
-Above image throws some errors while working on caffe2. 
+Don't use `Dockerfile.all`. Use `Dockerfile.caffe2` instead. 
