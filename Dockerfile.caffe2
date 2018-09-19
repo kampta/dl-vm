@@ -33,10 +33,8 @@ RUN cd /densepose/DensePoseData && bash get_densepose_uv.sh
 # Setup jupyter notebook
 COPY jupyter_notebook_config.py /root/.jupyter/
 
-# Jupyter has issues with being run directly: https://github.com/ipython/ipython/issues/7062
-COPY run_jupyter.sh /
 
 # Expose Ports for TensorBoard (6006), Ipython (8888)
 EXPOSE 6006 8888
-
+WORKDIR /
 CMD ["jupyter", "notebook", "--allow-root", "--no-browser", "--ip=0.0.0.0"]

@@ -7,7 +7,7 @@ This is a boilerplate docker image for doing most kind of deep learning stuff. I
 
 ```
 sudo docker build -t kampta/caffe2-vm:latest -f Dockerfile.caffe2 .
-sudo docker run --runtime=nvidia -v /home/kampta/dev:/home/kampta/dev -p 8888:8888 --rm -it kampta/caffe2-vm:latest
+sudo docker run --runtime=nvidia -v /home/kampta/dev:/home/kampta/dev -p 8888:8888 --rm -itd kampta/caffe2-vm:latest
 ```
 
 #### For Azure
