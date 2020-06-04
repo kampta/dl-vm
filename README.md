@@ -39,7 +39,7 @@ Openpose 1.4
 
 ```
 # build from dockerfile
-sudo docker build -t kampta/caffe2-vm:latest -f Dockerfile.caffe2 .
+sudo docker build -t kampta/openpose:1.4 -f Dockerfile.openpose .
 
 # or run the dockerfile directly
 sudo docker run --rm -it --runtime=nvidia kampta/openpose:1.4  bash
