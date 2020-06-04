@@ -1,0 +1,38 @@
+FROM ubuntu:18.04
+
+ENV TZ=America/New_York
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update -y \
+    && apt-get install -y \
+    apt-utils \
+    git \
+    wget \
+    unzip \
+    lsof \
+    lsb-core \
+    libatlas-base-dev \
+    libopencv-dev \
+    python-opencv \
+    python-pip \
+    libgoogle-glog-dev \
+    libboost-all-dev \
+    libprotobuf-dev \
+    protobuf-compiler \
+    libhdf5-serial-dev \
+    cmake \
+    caffe-cpu \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
+
+WORKDIR openpose
+RUN git checkout tags/v1.4.0 \
+    && git submodule update --init --recursive \
+    && mkdir build
+
+WORKDIR /openpose/build
+RUN cmake -D GPU_MODE=CPU_ONLY -DUSE_MKL=OFF ..
+RUN make
+RUN make install

@@ -1,0 +1,26 @@
+FROM kampta/openpose:1.4
+
+ENV TZ=America/New_York
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update -y \
+    && apt-get install -y \
+    curl \
+    python-tk \
+    vim
+
+WORKDIR /
+
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+RUN python get-pip.py --force-reinstall
+
+RUN git clone https://github.com/akanazawa/hmr
+
+WORKDIR /hmr
+RUN echo "tensorflow" >> requirements.txt
+RUN pip install -r requirements.txt
+
+RUN wget https://people.eecs.berkeley.edu/~kanazawa/cachedir/hmr/models.tar.gz && tar -xf models.tar.gz
+
+RUN sed -i "25iimport matplotlib;matplotlib.use(\"Agg\")\n" demo.py
+RUN sed -i "s/plt.show()/plt.savefig(\"figure.png\")/g" demo.py
